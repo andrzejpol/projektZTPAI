@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using backend.Models;
+using backend.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
@@ -6,6 +8,13 @@ namespace backend.Controllers
     [Route("api/auth")]
     public class AuthController : ControllerBase
     {
+        private readonly IAuthService _authService;
+
+        public AuthController(IAuthService authService) 
+        { 
+            _authService = authService;
+        }
+
         [HttpPost("login")]
         public string Login()
         {
@@ -13,9 +22,10 @@ namespace backend.Controllers
         }
 
         [HttpPost("register")]
-        public string Register()
+        public ActionResult Register([FromBody] RegisterUserDto dto)
         {
-            return "Register";
+            _authService.RegisterUser(dto);
+            return Ok();
         }
 
         [HttpPost("logout")]

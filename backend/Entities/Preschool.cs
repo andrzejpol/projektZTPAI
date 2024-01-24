@@ -7,6 +7,6 @@
         public string? Description { get; set; }
         public string? ContactEmail { get; set; }
         public int AddressId { get; set; }
-        public virtual Address Address { get; set; } = new Address();
+        public virtual Address Address { get; set; }
     }
 }

@@ -8,6 +8,6 @@
         public string PostalCode { get; set; } = "";
         public string Country { get; set; } = "";
 
-        public virtual Preschool Preschool { get; set; } = new Preschool();
+        public virtual Preschool Preschool { get; set; }
     }
 }
