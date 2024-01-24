@@ -1,5 +1,6 @@
 ﻿using backend.Entities;
 using backend.Models;
+using Microsoft.AspNetCore.Identity;
 using System.Xml;
 
 namespace backend.Services
@@ -11,9 +12,11 @@ namespace backend.Services
     public class AuthService : IAuthService
     {
         private readonly PreschoolDbContext _context;
-        public AuthService(PreschoolDbContext dbContext) 
+        private readonly IPasswordHasher<User> _passwordHasher;
+        public AuthService(PreschoolDbContext dbContext, IPasswordHasher<User> passwordHasher) 
         {
             _context = dbContext;
+            _passwordHasher = passwordHasher;
         }
         public void RegisterUser(RegisterUserDto dto) 
         {
@@ -22,9 +25,11 @@ namespace backend.Services
                 Email = dto.Email,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
-                PasswordHash = dto.Password,
                 RoleId = dto.RoleId
             };
+
+            var hashedPassword = _passwordHasher.HashPassword(newUser, dto.Password);
+            newUser.PasswordHash = hashedPassword;
 
             _context.Users.Add(newUser);
             _context.SaveChanges();

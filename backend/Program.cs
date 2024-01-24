@@ -1,6 +1,7 @@
 using backend.Entities;
 using backend.Seeder;
 using backend.Services;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddCors();
 builder.Services.AddDbContext<PreschoolDbContext>();
 builder.Services.AddScoped<PreschoolSeeder>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
 var app = builder.Build();
 
