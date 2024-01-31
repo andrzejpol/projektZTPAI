@@ -41,3 +41,6 @@ C:\Users\andrz\WebstormProjects\projektZTPAI\backend\bin\Debug\net6.0\Microsoft.
 C:\Users\andrz\WebstormProjects\projektZTPAI\backend\bin\Debug\net6.0\Npgsql.dll
 C:\Users\andrz\WebstormProjects\projektZTPAI\backend\bin\Debug\net6.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 C:\Users\andrz\WebstormProjects\projektZTPAI\backend\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\andrz\WebstormProjects\projektZTPAI\backend\bin\Debug\net6.0\FluentValidation.dll
+C:\Users\andrz\WebstormProjects\projektZTPAI\backend\bin\Debug\net6.0\FluentValidation.AspNetCore.dll
+C:\Users\andrz\WebstormProjects\projektZTPAI\backend\bin\Debug\net6.0\FluentValidation.DependencyInjectionExtensions.dll
