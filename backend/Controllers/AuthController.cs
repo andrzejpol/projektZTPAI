@@ -16,9 +16,10 @@ namespace backend.Controllers
         }
 
         [HttpPost("login")]
-        public string Login()
+        public ActionResult Login([FromBody] LoginDto dto)
         {
-            return "Login";
+            string token = _authService.GenerateJwt(dto);
+            return Ok(token);
         }
 
         [HttpPost("register")]

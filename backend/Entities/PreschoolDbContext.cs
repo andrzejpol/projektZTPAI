@@ -9,6 +9,9 @@ namespace backend.Entities
         public DbSet<Role>? Roles { get; set; }
         public DbSet<Address>? Addresses { get; set; }
         public DbSet<Preschool>? Preschools { get; set; }
+        public DbSet<Child>? Children { get; set; }
+        public DbSet<Opinion>? Opinions { get; set; }
+        public DbSet<Group>? Groups { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

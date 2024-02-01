@@ -23,7 +23,7 @@ namespace backend.Models.Validators
                     var emailInUse = dbContext.Users.Any(u => u.Email == value);
                     if (emailInUse)
                     {
-                        context.AddFailure("Email", "Email is already taken");
+                        context.AddFailure("Email", "Email has already taken");
                     }
                 });
         }

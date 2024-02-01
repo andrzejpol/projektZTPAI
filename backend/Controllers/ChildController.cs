@@ -1,39 +1,74 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using backend.Entities;
+using backend.Models;
+using backend.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
     [ApiController]
     [Route("api/children")]
+    //[Authorize]
     public class ChildController : ControllerBase
     {
-        [HttpGet]
-        public string GetAll()
+        private readonly IChildService _childService;
+
+        public ChildController(IChildService childService)
         {
-            return "All children";
+            _childService = childService;
+        }
+
+        [HttpGet]
+        //[Authorize(Roles = "Admin,Manager")]
+        public ActionResult<IEnumerable<Child>> GetAll()
+        {
+            var children = _childService.GetChildren();
+
+            return Ok(children);
         }
 
         [HttpPost]
-        public string AddNewChild()
+        public ActionResult AddNewChild([FromBody] Child child)
         {
-            return "New kid added";
+            _childService.AddChild(child);
+            return Ok();
         }
 
         [HttpGet("{childId}")]
-        public string GetChild([FromRoute]int childId)
+        public ActionResult<Child> GetChild([FromRoute]int childId)
         {
-            return $"Kid {childId}";
+            var child = _childService.GetChildById(childId);
+            if(child == null) 
+            {
+                return NotFound();
+            }
+            return Ok(child);
         }
 
         [HttpPut("{childId}")]
-        public string UpdateChild([FromRoute] int childId)
+        public ActionResult UpdateChild([FromRoute] int childId, [FromBody] Child child)
         {
-            return $"Kid {childId} updated";
+            if(childId != child.Id)
+            {
+                return BadRequest();
+            }
+
+            _childService.UpdateChildById(childId,child);
+            return NoContent();
         }
 
         [HttpDelete("{childId}")]
-        public string DeleteChild([FromRoute] int childId)
+        [Authorize(Roles = "Admin,Manager")]
+        public ActionResult DeleteChild([FromRoute] int childId)
         {
-            return $"Kid {childId} deleted";
+            var child = _childService.GetChildById(childId);
+            if( child == null )
+            {
+                return NotFound();
+            }
+
+            _childService.DeleteChild(childId);
+            return Ok();
         }
     }
 }
