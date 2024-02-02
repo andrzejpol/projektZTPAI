@@ -1,17 +1,11 @@
 # Preschool Pro
 
-Application for preschool management written in React + TS (frontend) and .NET Core (backend).
+Application for preschool management written in React (frontend) and .NET Core (backend).
 
 ## Table of Contents
 
 - [Introduction](#introduction)
 - [Features](#features)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Running](#running)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
