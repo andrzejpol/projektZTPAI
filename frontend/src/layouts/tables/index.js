@@ -27,7 +27,7 @@ import Footer from "examples/Footer";
 import Table from "examples/Tables/Table";
 
 // Data
-import authorsTableData from "layouts/tables/data/authorsTableData";
+import authorsTableData from "./data/childrenTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
 
 function Tables() {

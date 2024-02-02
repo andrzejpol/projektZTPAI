@@ -16,7 +16,7 @@
 import { useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -37,10 +37,49 @@ import Separator from "layouts/authentication/components/Separator";
 // Images
 import curved6 from "assets/images/curved-images/curved14.jpg";
 
+async function login(email, password)
+{
+  try {
+    const response = await fetch('http://localhost:5159/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({email, password}),
+    });
+
+    if(!response.ok){
+      throw new Error('Login failed');
+    }
+
+    const data = await response.json();
+    localStorage.setItem('token', data.token);
+    return data;
+  } catch(error) {
+    console.error('Login error', error);
+    throw error;
+  }
+}
+
 function SignIn() {
   const [rememberMe, setRememberMe] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const navigate = useNavigate();
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+  const handleSetEmail = (e) => setEmail(e.target.value);
+  const handleSetPassword = (e) => setPassword(e.target.value);
+  const handleLogin = async(e) =>{
+    e.preventDefault();
+    try {
+    await login(email, password);
+    navigate("/overview", {replace: true});
+    } catch(error){
+      console.log(error);
+    }
+  }
 
   return (
       <BasicLayout
@@ -59,12 +98,12 @@ function SignIn() {
           </SoftBox>
           <Separator />
           <SoftBox pt={2} pb={3} px={3}>
-            <SoftBox component="form" role="form">
+            <SoftBox component="form" role="form" onSubmit={handleLogin}>
               <SoftBox mb={2}>
-                <SoftInput type="email" placeholder="Email" />
+                <SoftInput type="email" placeholder="Email" onChange={handleSetEmail}/>
               </SoftBox>
               <SoftBox mb={2}>
-                <SoftInput type="password" placeholder="Password" />
+                <SoftInput type="password" placeholder="Password" onChange={handleSetPassword}/>
               </SoftBox>
               <SoftBox display="flex" alignItems="center">
                 <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -78,7 +117,7 @@ function SignIn() {
                 </SoftTypography>
               </SoftBox>
               <SoftBox mt={4} mb={1}>
-                <SoftButton variant="gradient" color="primary" fullWidth>
+                <SoftButton variant="gradient" color="primary" fullWidth type="submit">
                   sign up
                 </SoftButton>
               </SoftBox>
