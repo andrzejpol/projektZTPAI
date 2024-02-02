@@ -42,7 +42,7 @@ const childrenTableData = {
   rows: [
     {
       child: <Child name="John Michael" />,
-      group: <Group name="Manager" />,
+      group: <Group name="Bees" />,
       action: (
         <SoftTypography
           component="a"
@@ -57,7 +57,7 @@ const childrenTableData = {
     },
     {
       child: <Child name="Alexa Liras" />,
-      group: <Group name="Programator" />,
+      group: <Group name="Deers" />,
       action: (
         <SoftTypography
           component="a"

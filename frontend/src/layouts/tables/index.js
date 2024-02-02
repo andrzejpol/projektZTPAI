@@ -28,11 +28,29 @@ import Table from "examples/Tables/Table";
 
 // Data
 import authorsTableData from "./data/childrenTableData";
-import projectsTableData from "layouts/tables/data/projectsTableData";
+import {useEffect, useState} from "react";
 
 function Tables() {
   const { columns, rows } = authorsTableData;
-  const { columns: prCols, rows: prRows } = projectsTableData;
+  const [children, setChildren] = useState("");
+
+  useEffect(()=> {
+      const fetchChildren = async () =>{
+          try {
+              const response = await fetch('http://localhost:5159/api/children');
+              if(!response.ok){
+                  throw new Error('Something went wrong!');
+              }
+              const data = await response.json();
+              setChildren(data);
+
+          }catch (error) {
+              console.log("Fetching error");
+          }
+      }
+
+      fetchChildren();
+  },[])
 
   return (
     <DashboardLayout>
@@ -41,7 +59,7 @@ function Tables() {
         <SoftBox mb={3}>
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">Authors table</SoftTypography>
+              <SoftTypography variant="h6">Children table</SoftTypography>
             </SoftBox>
             <SoftBox
               sx={{

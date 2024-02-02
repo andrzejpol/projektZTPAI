@@ -16,13 +16,11 @@ Coded by www.creative-tim.com
 import { useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
 import Checkbox from "@mui/material/Checkbox";
-
-// Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftInput from "components/SoftInput";
@@ -36,10 +34,53 @@ import Separator from "layouts/authentication/components/Separator";
 // Images
 import curved6 from "assets/images/curved-images/curved14.jpg";
 
+async function register(firstName, lastName, email, password, confirmPassword)
+{
+  try {
+    const response = await fetch('http://localhost:5159/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({Email: email, Password: password, ConfirmPassword: confirmPassword,FirstName: firstName,LastName: lastName}),
+    });
+
+    if(!response.ok){
+      throw new Error('Register failed');
+    }
+  } catch(error) {
+    console.error('Register error', error);
+    throw error;
+  }
+}
+
 function SignUp() {
   const [agreement, setAgremment] = useState(true);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSetAgremment = () => setAgremment(!agreement);
+  const handleFirstNameChange = (e) => setFirstName(e.target.value);
+  const handleLastNameChange = (e) => setLastName(e.target.value);
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleConfirmPasswordChange = (e) => setConfirmPassword(e.target.value);
+
+  const handleRegister = async(e) =>{
+    e.preventDefault();
+    try {
+      await register(firstName, lastName, email, password, confirmPassword);
+      console.log("Zarejestrowano")
+      navigate("/authentication/sign-in", {replace: true});
+    } catch(error){
+      console.log(error);
+    }
+  }
 
   return (
     <BasicLayout
@@ -58,21 +99,21 @@ function SignUp() {
         </SoftBox>
         <Separator />
         <SoftBox pt={2} pb={3} px={3}>
-          <SoftBox component="form" role="form">
+          <SoftBox component="form" role="form" onSubmit={handleRegister}>
             <SoftBox mb={2}>
-              <SoftInput placeholder="First Name" />
+              <SoftInput placeholder="First Name" onChange={handleFirstNameChange}/>
             </SoftBox>
             <SoftBox mb={2}>
-              <SoftInput placeholder="Last Name" />
+              <SoftInput placeholder="Last Name" onChange={handleLastNameChange}/>
             </SoftBox>
             <SoftBox mb={2}>
-              <SoftInput type="email" placeholder="Email" />
+              <SoftInput type="email" placeholder="Email" onChange={handleEmailChange}/>
             </SoftBox>
             <SoftBox mb={2}>
-              <SoftInput type="password" placeholder="Password" />
+              <SoftInput type="password" placeholder="Password" onChange={handlePasswordChange}/>
             </SoftBox>
             <SoftBox mb={2}>
-              <SoftInput placeholder="Confirm Password" />
+              <SoftInput placeholder="Confirm Password" onChange={handleConfirmPasswordChange}/>
             </SoftBox>
             <SoftBox display="flex" alignItems="center">
               <Checkbox checked={agreement} onChange={handleSetAgremment}/>
@@ -95,7 +136,7 @@ function SignUp() {
               </SoftTypography>
             </SoftBox>
             <SoftBox mt={4} mb={1}>
-              <SoftButton variant="gradient" color="primary" fullWidth>
+              <SoftButton variant="gradient" color="primary" fullWidth type="submit">
                 sign up
               </SoftButton>
             </SoftBox>
